@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { listPage } from '@/api/orderList'
+import { listPage } from '@/api/userList'
 export default {
   data () {
     return {

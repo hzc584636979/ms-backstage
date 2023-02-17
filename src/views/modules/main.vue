@@ -22,8 +22,9 @@
 <script>
 import MainNavbar from './main-navbar'
 import MainSidebar from './main-sidebar'
-import authorizeList from './authorizeList'
+import accountList from './accountList'
 import userList from './userList'
+import authorizeList from './authorizeList'
 import { clearLoginInfo } from '@/utils'
 
 export default {
@@ -35,8 +36,9 @@ export default {
   components: {
     MainNavbar,
     MainSidebar,
-    authorizeList,
-    userList
+    accountList,
+    userList,
+    authorizeList
   },
   computed: {
     documentClientHeight: {
@@ -72,7 +74,7 @@ export default {
       this.loading = false
       this.userId = this.$cookie.get('userId')
       if (this.userId === null || this.userId === undefined || this.userId === '') {
-        // 重新发版刷新页面 当前登录用户为null的时候跳转到登录页
+        // 当前登录用户为null的时候跳转到登录页
         clearLoginInfo()
         this.$router.push({ name: 'login' })
       }

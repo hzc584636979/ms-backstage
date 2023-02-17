@@ -21,15 +21,10 @@ export default {
   data () {
     return {
       menuList: [
-        { id: 1, path: '/backstage/authorizeList', name: '墨水授权列表' },
-        { id: 2, path: '/backstage/userList', name: '用户列表' }
+        { id: 1, path: '/backstage/accountList', name: '账号管理' },
+        { id: 2, path: '/backstage/userList', name: '用户列表' },
+        { id: 3, path: '/backstage/authorizeList', name: '墨水授权列表' }
       ]
-    }
-  },
-  computed: {
-    menuActiveName: {
-      get () { return this.$store.state.common.menuActiveName },
-      set (val) { this.$store.commit('common/updateMenuActiveName', val) }
     }
   },
   methods: {

@@ -16,7 +16,7 @@
         </svg>
         <p class="not-found-desc">抱歉！您访问的页面<em>失联</em>啦 ...</p>
         <el-button icon="el-icon-back" @click="$router.go(-1)">返回上一页</el-button>
-        <el-button type="primary" class="not-found-btn-gohome" icon="el-icon-s-promotion" @click="$router.push({ name: 'home' })">进入首页</el-button>
+        <el-button type="primary" class="not-found-btn-gohome" icon="el-icon-s-promotion" @click="$router.push({ path: '/backstage/accountList' })">进入首页</el-button>
       </div>
     </div>
   </div>

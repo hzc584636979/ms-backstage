@@ -15,7 +15,7 @@ const _import = require('./import-' + process.env.NODE_ENV)
 const routes = [
   {
     path: '/',
-    redirect: '/backstage/authorizeList'
+    redirect: '/backstage/accountList'
   },
   {
     path: '/404',
@@ -33,7 +33,8 @@ const routes = [
     path: '/backstage/:routeName',
     name: 'backstage',
     component: _import('modules/main')
-  }
+  },
+  { path: '*', redirect: { name: '404' } }
 ]
 
 // 配置公共路由

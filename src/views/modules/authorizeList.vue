@@ -12,6 +12,8 @@
       <el-table-column prop="companyNameA" header-align="center" align="center" label="姓名"></el-table-column>
       <el-table-column prop="companyNameA" header-align="center" align="center" label="电话"></el-table-column>
       <el-table-column prop="contractNo" header-align="center" align="center" label="获取时间"></el-table-column>
+      <el-table-column prop="orderNo" header-align="center" align="center" label="墨水编号"></el-table-column>
+      <el-table-column prop="orderNo" header-align="center" align="center" label="主板编号"></el-table-column>
       <el-table-column prop="companyNameB" header-align="center" align="center" label="获取授权编码"></el-table-column>
     </el-table>
     <el-pagination

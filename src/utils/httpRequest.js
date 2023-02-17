@@ -10,7 +10,6 @@ const http = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json; charset=utf-8'
-    // 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
   }
 })
 
@@ -34,12 +33,6 @@ http.interceptors.response.use(response => {
   }
   return response
 }, error => {
-  // Vue.use(Message({
-  //   message: '网络错误，请检查网络之后重试',
-  //   type: 'error',
-  //   showClose: true,
-  //   duration: 0
-  // }))
   return Promise.reject(error)
 })
 
