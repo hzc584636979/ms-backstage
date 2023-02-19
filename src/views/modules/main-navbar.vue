@@ -1,7 +1,7 @@
 <template>
   <nav class="site-navbar">
     <div class="site-navbar__body clearfix">
-      {{ account }},<span class="pointer danger-color" @click="logoutHandle()">退出登录</span>
+      {{ account }}, <span class="pointer danger-color" @click="logoutHandle()">退出登录</span>
     </div>
   </nav>
 </template>

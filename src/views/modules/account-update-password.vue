@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="添加账号"
+    title="修改密码"
     :close-on-click-modal="false"
     :visible.sync="visible"
     width="450px"
@@ -12,21 +12,6 @@
       style="padding:0;"
     >
       <el-form :model="dataForm" :rules="dataRule" ref="dataForm" label-width="70px">
-        <el-form-item label="账号" prop="username">
-          <el-input
-            v-model.trim="dataForm.username"
-            maxlength="20"
-            show-word-limit
-            placeholder="格式为5到20位字符"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="姓名" prop="realName">
-          <el-input
-            v-model.trim="dataForm.realName"
-            placeholder
-            clearable
-          ></el-input>
-        </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input
             v-model.trim="dataForm.password"
@@ -47,17 +32,9 @@
 </template>
 
 <script>
-import { addUser } from '@/api/accountList'
+import { resetUserPassword } from '@/api/accountList'
 export default {
   data () {
-    let validateLoginNo = (rule, value, callback) => {
-      let regLenth = /^[a-zA-Z0-9-]{5,20}$/
-      if (!regLenth.test(value) && value !== '' && value !== null) {
-        callback(new Error('格式为5到20位字符'))
-      } else {
-        callback()
-      }
-    }
     var validatePassword = (rule, value, callback) => {
       let regLenth = /^[a-zA-Z0-9-]{6,20}$/
       if (!regLenth.test(value) && value !== '' && value !== null) {
@@ -70,19 +47,10 @@ export default {
       visible: false,
       isSubmit: false,
       dataForm: {
-        username: '',
-        realName: '',
-        gid: 1,
+        id: '',
         password: ''
       },
       dataRule: {
-        username: [
-          { required: true, message: '账号不能为空', trigger: 'blur' },
-          { validator: validateLoginNo, trigger: 'blur' }
-        ],
-        realName: [
-          { required: true, message: '姓名不能为空', trigger: 'blur' }
-        ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
           { validator: validatePassword, trigger: 'blur' }
@@ -91,12 +59,13 @@ export default {
     }
   },
   methods: {
-    init () {
+    init (row) {
       this.visible = true
       this.isSubmit = false
       this.$nextTick(() => {
         this.$refs.dataForm.resetFields()
       })
+      this.dataForm.id = row.row
     },
     // 表单提交
     dataFormSubmit () {
@@ -106,7 +75,7 @@ export default {
             ...this.dataForm
           }
           this.isSubmit = true
-          addUser(params).then(({ data }) => {
+          resetUserPassword(params).then(({ data }) => {
             this.isSubmit = false
             if (data.code == 200) {
               this.$message({
@@ -115,7 +84,6 @@ export default {
                 duration: 1500,
                 onClose: () => {
                   this.visible = false
-                  this.$emit('refreshDataList')
                 }
               })
             } else {
@@ -128,9 +96,7 @@ export default {
     cancelHandle () {
       this.visible = false
       this.dataForm = {
-        username: '',
-        realName: '',
-        gid: 1,
+        id: '',
         password: ''
       }
     }

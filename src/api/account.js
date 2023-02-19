@@ -1,3 +1,3 @@
 import { httpPost } from '@/api'
 
-export const adminLoginIn = (params) => httpPost('/login', params) // 后台登陆
+export const loginIn = (params) => httpPost('/login', params) // 后台登陆

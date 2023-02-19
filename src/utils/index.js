@@ -74,3 +74,12 @@ export function isEmpty (date) {
   }
   return false
 }
+
+/**
+ * 时间戳转年月日
+ * @param time 数据
+ */
+export function toDateString (date) {
+  date = date.length === 10 ? date * 1000 : date
+  return new Date(date * 1000).toLocaleDateString()
+}

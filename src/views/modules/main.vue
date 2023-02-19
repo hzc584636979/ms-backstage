@@ -2,8 +2,9 @@
   <div
     class="site-wrapper"
     v-loading.fullscreen.lock="loading"
-    element-loading-text="拼命加载中">
-    <template v-if="!loading && userId">
+    element-loading-text="拼命加载中"
+  >
+    <template v-if="!loading && token">
       <main-sidebar />
       <div class="site-content__wrapper" :style="{ 'min-height': documentClientHeight + 'px' }">
         <main-navbar />
@@ -45,9 +46,9 @@ export default {
       get () { return this.$store.state.common.documentClientHeight },
       set (val) { this.$store.commit('common/updateDocumentClientHeight', val) }
     },
-    userId: {
-      get () { return this.$store.state.user.id },
-      set (val) { this.$store.commit('user/updateId', val) }
+    token: {
+      get () { return this.$store.state.user.token },
+      set (val) { this.$store.commit('user/updateToken', val) }
     },
     siteContentViewHeight () {
       var height = this.documentClientHeight - 50 - 30 - 2
@@ -72,8 +73,8 @@ export default {
     // 获取当前管理员信息
     getUserInfo () {
       this.loading = false
-      this.userId = this.$cookie.get('userId')
-      if (this.userId === null || this.userId === undefined || this.userId === '') {
+      this.token = this.$cookie.get('token')
+      if (this.token === null || this.token === undefined || this.token === '') {
         // 当前登录用户为null的时候跳转到登录页
         clearLoginInfo()
         this.$router.push({ name: 'login' })

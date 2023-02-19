@@ -1,11 +1,11 @@
 export default {
   namespaced: true,
   state: {
-    id: 0
+    token: ''
   },
   mutations: {
-    updateId (state, id) {
-      state.id = id
+    updateToken (state, token) {
+      state.token = token
     }
   }
 }

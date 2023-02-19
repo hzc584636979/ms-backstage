@@ -13,22 +13,20 @@
             @keyup.enter.native="dataFormSubmit()"
             status-icon
           >
-            <el-form-item prop="account">
+            <el-form-item prop="username">
               <el-input
-                v-model.trim="dataForm.account"
+                v-model.trim="dataForm.username"
                 clearable
-                placeholder="请输入8-16位字母和数字"
               >
                 <div class="input-pre-text" slot="prepend">账号</div>
               </el-input>
             </el-form-item>
-            <el-form-item prop="password">
+            <el-form-item prop="pwd">
               <el-input
-                v-model.trim="dataForm.password"
+                v-model.trim="dataForm.pwd"
                 type="password"
                 clearable
                 show-password
-                placeholder="请输入8-16位字母和数字"
               >
                 <div class="input-pre-text" slot="prepend">密码</div>
               </el-input>
@@ -49,20 +47,21 @@
 </template>
 
 <script>
-// import { adminLoginIn } from '@/api/account'
-import { isUserName, isPassWord } from '@/utils/validate'
+import { loginIn } from '@/api/account'
 export default {
   data () {
     let validateAccount = (rule, value, callback) => {
-      if (!isUserName(value)) {
-        callback(new Error('请输入8-16位字母和数字的账号'))
+      let regLenth = /^[a-zA-Z0-9-]{5,20}$/
+      if (!regLenth.test(value) && value !== '' && value !== null) {
+        callback(new Error('格式为5到20位字符'))
       } else {
         callback()
       }
     }
     let validatePassword = (rule, value, callback) => {
-      if (!isPassWord(value)) {
-        callback(new Error('请输入8-16位字母和数字的密码'))
+      let regLenth = /^[a-zA-Z0-9-]{6,20}$/
+      if (!regLenth.test(value) && value !== '' && value !== null) {
+        callback(new Error('格式为6到20位字符'))
       } else {
         callback()
       }
@@ -70,15 +69,15 @@ export default {
     return {
       loading: false,
       dataForm: {
-        account: '',
-        password: ''
+        username: '',
+        pwd: ''
       },
       dataRule: {
-        account: [
+        username: [
           { required: true, message: '用户名不能为空', trigger: 'blur' },
           { validator: validateAccount, trigger: 'blur', min: 8, max: 16 }
         ],
-        password: [
+        pwd: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
           { validator: validatePassword, trigger: 'blur', min: 8, max: 16 }
         ]
@@ -93,28 +92,18 @@ export default {
     dataFormSubmit () {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.$cookie.set('token', 'token')
-          this.$cookie.set('userId', 'userId')
-          this.$cookie.set('account', this.dataForm.account)
-          this.$router.replace({ path: '/backstage/authorizeList' })
-          // const params = { ...this.dataForm }
-          // this.loading = true
-          // adminLoginIn(params).then(({ data }) => {
-          //   if (data && data.success === true) {
-          //     this.$cookie.set('token', data.data.token)
-          //     this.$cookie.set('userId', data.data.employeeId)
-          //     this.$router.replace({ path: '/backstage/authorizeList' })
-          //   } else {
-          //     this.loading = false
-          //     this.$message.error(data.message)
-          //   }
-          // }).catch(({err}) => {
-          //   console.log(err)
-          //   if (err === undefined) {
-          //     this.$message.error('网络错误，请检查网络之后重试')
-          //   }
-          //   this.loading = false
-          // })
+          const params = { ...this.dataForm }
+          this.loading = true
+          loginIn(params).then(({ data }) => {
+            this.loading = false
+            if (data.code == 200) {
+              this.$cookie.set('token', data.data.token)
+              this.$cookie.set('account', this.dataForm.username)
+              this.$router.replace({ path: '/backstage/accountList' })
+            } else {
+              this.$message.error(data.message)
+            }
+          })
         }
       })
     },

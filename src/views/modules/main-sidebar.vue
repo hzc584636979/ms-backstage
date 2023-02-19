@@ -3,7 +3,7 @@
     <div class="site-sidebar__inner">
       <el-menu
         mode='vertical'
-        default-active="1"
+        :default-active="curActive"
         :collapseTransition="false"
         active-text-color="#fff"
         text-color="#fff"
@@ -20,6 +20,7 @@
 export default {
   data () {
     return {
+      curActive: '',
       menuList: [
         { id: 1, path: '/backstage/accountList', name: '账号管理' },
         { id: 2, path: '/backstage/userList', name: '用户列表' },
@@ -27,8 +28,17 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.getCurActive()
+  },
   methods: {
-
+    getCurActive () {
+      this.menuList.map(item => {
+        if (item.path == this.$route.path) {
+          this.curActive = item.id + ''
+        }
+      })
+    }
   }
 }
 </script>

@@ -10,7 +10,7 @@ import '@/assets/scss/index.scss'
 import 'default-passive-events'
 import httpRequest from '@/utils/httpRequest' // api: https://github.com/axios/axios
 import i18n from '@/lang'
-import { uniqueArr, isEmpty } from '@/utils'
+import { uniqueArr, isEmpty, toDateString } from '@/utils'
 import cloneDeep from 'lodash/cloneDeep'
 Vue.use(VueCookie)
 Vue.use(VueClipBoard)
@@ -37,8 +37,9 @@ if (!FileReader.prototype.readAsBinaryString) {
 }
 // 挂载全局
 Vue.prototype.$http = httpRequest // ajax请求方法
-Vue.prototype.uniqueArr = uniqueArr     // 数组去重
+Vue.prototype.$uniqueArr = uniqueArr     // 数组去重
 Vue.prototype.$isEmpty = isEmpty // 判断是否为空值
+Vue.prototype.$toDateString = toDateString // 时间戳转年月日
 
 // 保存整站vuex本地储存初始状态
 window.SITE_CONFIG['storeState'] = cloneDeep(store.state)

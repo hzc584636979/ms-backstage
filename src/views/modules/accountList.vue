@@ -9,11 +9,11 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
-      height="50vh"
       style="width: 100%;"
     >
-      <el-table-column prop="orderNo" header-align="center" align="center" label="账号"></el-table-column>
-      <el-table-column prop="orderNo" header-align="center" align="center" label="创建时间"></el-table-column>
+      <el-table-column prop="username" header-align="center" align="center" label="账号"></el-table-column>
+      <el-table-column prop="real_name" header-align="center" align="center" label="姓名"></el-table-column>
+      <el-table-column prop="created_time" header-align="center" align="center" label="创建时间"></el-table-column>
       <el-table-column header-align="center" align="center" width="200" label="操作">
         <template slot-scope="scope">
           <el-button
@@ -21,7 +21,7 @@
             type="text"
             @click="resetPassHandle(scope.row)"
             style="color:#E6A23C"
-          >重置密码</el-button>
+          >修改密码</el-button>
           <el-button
             type="text"
             icon="el-icon-delete"
@@ -36,34 +36,39 @@
       @current-change="currentChangeHandle"
       :current-page="page"
       :page-sizes="[10, 20, 50, 100]"
-      :page-size="limit"
+      :page-size="pageSize"
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
     <!-- 弹窗, 新增 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+    <!-- 弹窗, 修改密码 -->
+    <update-password v-if="updatePasswordVisible" ref="updatePassword"></update-password>
   </div>
 </template>
 
 <script>
-import { listPage, resetUserPassword, delUser } from '@/api/accountList'
+import { listPage, delUser } from '@/api/accountList'
 import AddOrUpdate from './account-add-or-update'
+import UpdatePassword from './account-update-password'
 export default {
   components: {
-    AddOrUpdate
+    AddOrUpdate,
+    UpdatePassword
   },
   data () {
     return {
       dataList: [],
       page: 1,
-      limit: 10,
+      pageSize: 10,
       totalPage: 0,
       dataListLoading: false,
-      addOrUpdateVisible: false
+      addOrUpdateVisible: false,
+      updatePasswordVisible: false
     }
   },
   mounted () {
-    // this.getDataList('reset')
+    this.getDataList()
   },
   methods: {
     // 新增账号
@@ -75,42 +80,14 @@ export default {
     },
     // 重置密码
     resetPassHandle (row) {
-      this.$confirm('确定对 “ <i>' + row.employeeName + '</i> ” 进行 <strong>重置密码</strong> 操作?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        dangerouslyUseHTMLString: true
-      }).then(() => {
-        this.dataListLoading = true
-        let params = {
-          employeeId: row.employeeId
-        }
-        resetUserPassword(params).then(({data}) => {
-          if (data && data.success === true) {
-            this.$message({
-              message: '操作成功',
-              type: 'success',
-              duration: 1500,
-              onClose: () => {
-                this.getDataList()
-              }
-            })
-          } else {
-            this.$message.error(data.message)
-          }
-          this.dataListLoading = false
-        })
-      }).catch(() => {
-        this.$message.info('取消操作！')
+      this.updatePasswordVisible = true
+      this.$nextTick(() => {
+        this.$refs.updatePassword.init(row)
       })
     },
     // 删除
     deleteHandle (row) {
-      if (row.status === 1) {
-        this.$message.error('当前用户状态为启用，不允许删除操作！')
-        return
-      }
-      this.$confirm('确定对 “ <i>' + row.employeeName + '</i> ” 进行 <strong>删除</strong> 操作?', '提示', {
+      this.$confirm('确定对 “ <i>' + row.username + '</i> ” 进行 <strong>删除</strong> 操作?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -118,10 +95,10 @@ export default {
       }).then(() => {
         this.dataListLoading = true
         let params = {
-          employeeId: row.employeeId
+          id: row.id
         }
         delUser(params).then(({data}) => {
-          if (data && data.success === true) {
+          if (data.code == 200) {
             this.$message({
               message: '操作成功',
               type: 'success',
@@ -140,16 +117,12 @@ export default {
       })
     },
     // 获取数据列表
-    getDataList (_type) {
-      if (_type === 'reset') {
-        this.page = 1
-        this.limit = 10
-      }
+    getDataList () {
       this.dataListLoading = true
-      let params = { page: this.page, limit: this.limit }
+      let params = { page: this.page, pageSize: this.pageSize }
       listPage(params).then(({ data }) => {
-        if (data && data.success === true) {
-          this.dataList = data.data.rows
+        if (data.code == 200) {
+          this.dataList = data.data.list
           this.totalPage = data.data.total
         } else {
           this.$message.error(data.message)
@@ -161,7 +134,7 @@ export default {
     },
     // 每页数
     sizeChangeHandle (val) {
-      this.limit = val
+      this.pageSize = val
       this.page = 1
       this.getDataList()
     },

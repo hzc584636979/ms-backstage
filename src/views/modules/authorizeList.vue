@@ -4,24 +4,23 @@
       :data="dataList"
       border
       v-loading="dataListLoading"
-      height="50vh"
       style="width: 100%;"
     >
-      <el-table-column prop="orderNo" header-align="center" align="center" label="账号"></el-table-column>
-      <el-table-column prop="orderNo" header-align="center" align="center" label="公司名称"></el-table-column>
-      <el-table-column prop="companyNameA" header-align="center" align="center" label="姓名"></el-table-column>
-      <el-table-column prop="companyNameA" header-align="center" align="center" label="电话"></el-table-column>
-      <el-table-column prop="contractNo" header-align="center" align="center" label="获取时间"></el-table-column>
-      <el-table-column prop="orderNo" header-align="center" align="center" label="墨水编号"></el-table-column>
-      <el-table-column prop="orderNo" header-align="center" align="center" label="主板编号"></el-table-column>
-      <el-table-column prop="companyNameB" header-align="center" align="center" label="获取授权编码"></el-table-column>
+      <el-table-column prop="username" header-align="center" align="center" label="账号"></el-table-column>
+      <el-table-column prop="corporate_name" header-align="center" align="center" label="公司名称"></el-table-column>
+      <el-table-column prop="real_name" header-align="center" align="center" label="姓名"></el-table-column>
+      <el-table-column prop="phone" header-align="center" align="center" label="电话"></el-table-column>
+      <el-table-column prop="created_time" header-align="center" align="center" label="获取时间"></el-table-column>
+      <el-table-column prop="main_board_id" header-align="center" align="center" label="墨水编号"></el-table-column>
+      <el-table-column prop="ink_code" header-align="center" align="center" label="主板编号"></el-table-column>
+      <el-table-column prop="code" header-align="center" align="center" label="获取授权编码"></el-table-column>
     </el-table>
     <el-pagination
       @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle"
       :current-page="page"
       :page-sizes="[10, 20, 50, 100]"
-      :page-size="limit"
+      :page-size="pageSize"
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
@@ -35,26 +34,22 @@ export default {
     return {
       dataList: [],
       page: 1,
-      limit: 10,
+      pageSize: 10,
       totalPage: 0,
       dataListLoading: false
     }
   },
   mounted () {
-    // this.getDataList('reset')
+    this.getDataList()
   },
   methods: {
     // 获取数据列表
-    getDataList (_type) {
-      if (_type === 'reset') {
-        this.page = 1
-        this.limit = 10
-      }
+    getDataList () {
       this.dataListLoading = true
-      let params = { page: this.page, limit: this.limit }
+      let params = { page: this.page, pageSize: this.pageSize }
       listPage(params).then(({ data }) => {
-        if (data && data.success === true) {
-          this.dataList = data.data.rows
+        if (data.code == 200) {
+          this.dataList = data.data.list
           this.totalPage = data.data.total
         } else {
           this.$message.error(data.message)
@@ -66,7 +61,7 @@ export default {
     },
     // 每页数
     sizeChangeHandle (val) {
-      this.limit = val
+      this.pageSize = val
       this.page = 1
       this.getDataList()
     },
