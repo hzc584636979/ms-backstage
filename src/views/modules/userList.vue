@@ -31,7 +31,7 @@
       <el-table-column prop="real_name" header-align="center" align="center" label="姓名"></el-table-column>
       <el-table-column prop="phone" header-align="center" align="center" label="电话"></el-table-column>
       <el-table-column prop="email" header-align="center" align="center" label="邮箱"></el-table-column>
-      <el-table-column prop="country_name" header-align="center" align="center" label="国家"></el-table-column>
+      <el-table-column prop="country_zh" header-align="center" align="center" label="国家"></el-table-column>
       <el-table-column prop="region" header-align="center" align="center" label="地区"></el-table-column>
     </el-table>
     <el-pagination
