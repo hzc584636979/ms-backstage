@@ -53,7 +53,7 @@ export default {
     let validateAccount = (rule, value, callback) => {
       let regLenth = /^[a-zA-Z0-9-]{5,20}$/
       if (!regLenth.test(value) && value !== '' && value !== null) {
-        callback(new Error('格式为5到20位字符'))
+        callback(new Error('格式为5到20位字母或数字'))
       } else {
         callback()
       }
@@ -61,7 +61,7 @@ export default {
     let validatePassword = (rule, value, callback) => {
       let regLenth = /^[a-zA-Z0-9-]{6,20}$/
       if (!regLenth.test(value) && value !== '' && value !== null) {
-        callback(new Error('格式为6到20位字符'))
+        callback(new Error('格式为6到20位字母或数字'))
       } else {
         callback()
       }

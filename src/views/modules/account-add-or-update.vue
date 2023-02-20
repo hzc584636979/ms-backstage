@@ -17,7 +17,7 @@
             v-model.trim="dataForm.username"
             maxlength="20"
             show-word-limit
-            placeholder="格式为5到20位字符"
+            placeholder="格式为5到20位字母或数字"
           ></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="realName">
@@ -30,7 +30,7 @@
         <el-form-item label="密码" prop="password">
           <el-input
             v-model.trim="dataForm.password"
-            placeholder="格式为6到20位字符"
+            placeholder="格式为6到20位字母或数字"
             type="password"
             show-password
             clearable
@@ -53,7 +53,7 @@ export default {
     let validateLoginNo = (rule, value, callback) => {
       let regLenth = /^[a-zA-Z0-9-]{5,20}$/
       if (!regLenth.test(value) && value !== '' && value !== null) {
-        callback(new Error('格式为5到20位字符'))
+        callback(new Error('格式为5到20位字母或数字'))
       } else {
         callback()
       }
@@ -61,7 +61,7 @@ export default {
     var validatePassword = (rule, value, callback) => {
       let regLenth = /^[a-zA-Z0-9-]{6,20}$/
       if (!regLenth.test(value) && value !== '' && value !== null) {
-        callback(new Error('格式为6到20位字符'))
+        callback(new Error('格式为6到20位字母或数字'))
       } else {
         callback()
       }

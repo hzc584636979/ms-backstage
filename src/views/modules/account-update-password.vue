@@ -15,7 +15,7 @@
         <el-form-item label="密码" prop="password">
           <el-input
             v-model.trim="dataForm.password"
-            placeholder="格式为6到20位字符"
+            placeholder="格式为6到20位字母或数字"
             type="password"
             show-password
             clearable
@@ -38,7 +38,7 @@ export default {
     var validatePassword = (rule, value, callback) => {
       let regLenth = /^[a-zA-Z0-9-]{6,20}$/
       if (!regLenth.test(value) && value !== '' && value !== null) {
-        callback(new Error('格式为6到20位字符'))
+        callback(new Error('格式为6到20位字母或数字'))
       } else {
         callback()
       }
@@ -65,7 +65,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.dataForm.resetFields()
       })
-      this.dataForm.id = row.row
+      this.dataForm.id = row.id
     },
     // 表单提交
     dataFormSubmit () {
