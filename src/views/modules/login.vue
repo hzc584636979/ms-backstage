@@ -4,7 +4,7 @@
       <div class="site-content">
         <div class="login-main">
           <div class="login-title-all">
-            <h3 class="login-title">墨水激活后台系统</h3>
+            <h3 class="login-title">墨水系统后台</h3>
           </div>
           <el-form
             :model="dataForm"
