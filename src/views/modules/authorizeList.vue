@@ -1,5 +1,32 @@
 <template>
   <div>
+    <el-form :inline="true" @keyup.enter.native="getDataList()">
+      <el-form-item label="搜索: ">
+        <el-input
+          style="width: 350px;"
+          v-model="dataForm.searchVal"
+          clearable
+          placeholder="账号、公司名称、姓名、电话"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="时间">
+        <el-date-picker
+          v-model="datetime"
+          type="daterange"
+          align="center"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :default-time="['00:00:00']"
+          format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd"
+          style="width: 100%"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="success" @click="getDataList()">查询</el-button>
+      </el-form-item>
+    </el-form>
     <el-table
       :data="dataList"
       border
@@ -32,11 +59,17 @@ import { listPage } from '@/api/authorizeList'
 export default {
   data () {
     return {
+      dataForm: {
+        searchVal: '',
+        startTime: '',
+        endTime: ''
+      },
       dataList: [],
       page: 1,
       pageSize: 10,
       totalPage: 0,
-      dataListLoading: false
+      dataListLoading: false,
+      datetime: ['', '']
     }
   },
   mounted () {
@@ -46,7 +79,7 @@ export default {
     // 获取数据列表
     getDataList () {
       this.dataListLoading = true
-      let params = { page: this.page, pageSize: this.pageSize }
+      let params = { ...this.dataForm, page: this.page, pageSize: this.pageSize }
       listPage(params).then(({ data }) => {
         if (data.code == 200) {
           this.dataList = data.data.list
@@ -69,6 +102,17 @@ export default {
     currentChangeHandle (val) {
       this.page = val
       this.getDataList()
+    }
+  },
+  watch: {
+    datetime (newVal, oldVal) {
+      if (newVal === null) {
+        this.dataForm.startTime = ''
+        this.dataForm.endTime = ''
+      } else {
+        this.dataForm.startTime = newVal[0]
+        this.dataForm.endTime = newVal[1]
+      }
     }
   }
 }

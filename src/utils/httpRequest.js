@@ -27,7 +27,7 @@ http.interceptors.request.use(config => {
  * 响应拦截
  */
 http.interceptors.response.use(response => {
-  if (response.data && response.data.code === '17') { // 17, 登录信息失效
+  if (response.data && response.data.code == 17) { // 17, 登录信息失效
     clearLoginInfo()
     router.push({ name: 'login' })
   }
