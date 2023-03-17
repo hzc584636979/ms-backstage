@@ -1,5 +1,10 @@
 <template>
-  <div class="site-wrapper site-page--login">
+  <div
+    class="site-wrapper site-page--login"
+    :class="{
+      'site-page--login--mt': $store.state.common.processEnv.BASE_NAME == 'mt'
+    }"
+  >
     <div class="site-content__wrapper">
       <div class="site-content">
         <div class="login-main">
@@ -139,6 +144,11 @@ export default {
     content: "";
     background-image: url(~@/assets/img/global_bg.jpg);
     background-size: cover;
+  }
+  &--mt {
+    &:before {
+      background-image: url(~@/assets/img/global_bg_mt.jpg);
+    }
   }
   .site-content__wrapper {
     position: absolute;

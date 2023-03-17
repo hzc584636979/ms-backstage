@@ -4,5 +4,8 @@
 
 <script>
 export default {
+  mounted () {
+    this.$store.commit('common/updateProcessEnv', process.env)
+  }
 }
 </script>
