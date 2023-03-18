@@ -6,14 +6,16 @@ let webOps = {
 }
 switch (process.env.npm_config_website) {
   case 'nc':
-    webOps.BASE_URL = '"http://124.71.46.129:880/api"'
+    webOps.BASE_URL = '"http://124.71.46.129:880/api/admin"'
     webOps.BASE_TITLE = '"墨水系统后台"'
     break;
   case 'mt':
-    webOps.BASE_URL = '"http://' + process.env.npm_config_website + ':880/api"'
-    webOps.BASE_TITLE = '"' + process.env.npm_config_website + '墨水系统后台"'
+    webOps.BASE_URL = '"http://120.78.94.79:880/api/admin"'
+    webOps.BASE_TITLE = '"墨水系统后台"'
     break;
   default:
+    webOps.BASE_URL = '"http://' + process.env.npm_config_website + ':880/api/admin"'
+    webOps.BASE_TITLE = '"' + process.env.npm_config_website + '墨水系统后台"'
     break;
 }
 
