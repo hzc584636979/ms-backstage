@@ -4,8 +4,17 @@
 
 <script>
 export default {
-  mounted () {
-    this.$store.commit('common/updateProcessEnv', process.env)
+  provide () {
+    return {
+      processEnv: this.processEnv
+    }
+  },
+  computed: {
+    processEnv: {
+      get () {
+        return process.env
+      }
+    }
   }
 }
 </script>

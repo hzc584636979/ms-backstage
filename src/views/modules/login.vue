@@ -2,7 +2,7 @@
   <div
     class="site-wrapper site-page--login"
     :class="{
-      'site-page--login--mt': $store.state.common.processEnv.BASE_NAME == 'mt'
+      'site-page--login--mt': processEnv.BASE_NAME == 'mt'
     }"
   >
     <div class="site-content__wrapper">
@@ -54,6 +54,7 @@
 <script>
 import { loginIn } from '@/api/account'
 export default {
+  inject: ['processEnv'],
   data () {
     let validateAccount = (rule, value, callback) => {
       let regLenth = /^[a-zA-Z0-9-]{5,20}$/
@@ -91,6 +92,9 @@ export default {
   },
   created () {
     this.removeLoading()
+  },
+  mounted () {
+    console.log(this.processEnv)
   },
   methods: {
     // 提交表单
